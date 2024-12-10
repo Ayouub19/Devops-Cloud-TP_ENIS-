@@ -1,0 +1,4 @@
+**/my-terraform-project/.terraform*
+**/my-terraform-project/remote-backend/.terraform*
+enis-app-tp/backend/venv
+**/__pycache__
