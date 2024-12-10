@@ -214,7 +214,6 @@ pipeline {
             }
         }
 
-  for linux users
 
          stage('Check Ansible Version') {
              steps {
