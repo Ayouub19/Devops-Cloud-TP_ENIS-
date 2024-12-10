@@ -1,3 +1,4 @@
+
 def EC2_PUBLIC_IP = ""
 def RDS_ENDPOINT = ""
 def DEPLOYER_KEY_URI = ""
@@ -102,7 +103,6 @@ pipeline {
                 }
             }
         }
-}
 
         stage('Create Database in RDS') {
             steps {
@@ -114,6 +114,7 @@ pipeline {
                 }
             }
         }
+
 
 
 
@@ -241,3 +242,4 @@ pipeline {
 //                 }
 //             }
 //         }
+
