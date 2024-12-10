@@ -173,78 +173,77 @@ pipeline {
                 }
             }
         }
+        stage('Download SSH Key from S3') {
+            steps {
+                script {
+                    dir('ansible') {
+                        sh """
+                        # Check and delete the existing key if it exists
+                        if [ -f "deployer_key.pem" ]; then
+                            echo "Deleting existing deployer_key.pem"
+                            rm deployer_key.pem
+                        fi
+
+                        # Download the SSH key from S3
+                        aws s3 cp ${DEPLOYER_KEY_URI} deployer_key.pem
+
+                        # Set the proper permissions for the private key
+                        chmod 600 deployer_key.pem
+                        """
+                    }
+                }
+            }
+        }
+        stage('Update Hosts File') {
+            steps {
+                script {
+                    dir('ansible') {
+                        sh """
+                        if [ -f "hosts" ]; then
+                            echo "Found hosts file at \$(pwd)"
+                            sed -i "2s|.*|${EC2_PUBLIC_IP}|" hosts
+                            echo "Updated hosts file:"
+                            cat hosts
+                        else
+                            echo "hosts file not found in \$(pwd)!"
+                            exit 1
+                        fi
+                        """
+                    }
+                }
+            }
+        }
+
+  for linux users
+
+         stage('Check Ansible Version') {
+             steps {
+                 script {
+                     sh """
+                     echo "Printing the current Ansible version:"
+                     ansible --version
+                     """
+                 }
+             }
+         }
+         stage('Run Ansible Playbook') {
+             steps {
+                 script {
+                     dir('ansible') {
+                         sh """
+                         if [ -f "docker_deploy_playbook.yml" ]; then
+                             echo "Found playbook docker_deploy_playbook.yml"
+
+                             # Run the Ansible playbook
+                             ansible-playbook -i hosts docker_deploy_playbook.yml
+                         else
+                             echo "Playbook docker_deploy_playbook.yml not found!"
+                             exit 1
+                         fi
+                         """
+                     }
+                 }
+             }
+         }
 }
 }
-//        stage('Download SSH Key from S3') {
-//            steps {
-//                script {
-//                    dir('ansible') {
-//                        sh """
-//                        # Check and delete the existing key if it exists
-//                        if [ -f "deployer_key.pem" ]; then
-//                            echo "Deleting existing deployer_key.pem"
-//                            rm deployer_key.pem
-//                        fi
-//
-//                        # Download the SSH key from S3
-//                        aws s3 cp ${DEPLOYER_KEY_URI} deployer_key.pem
-//
-//                        # Set the proper permissions for the private key
-//                        chmod 600 deployer_key.pem
-//                        """
-//                    }
-//                }
-//            }
-//        }
-//        stage('Update Hosts File') {
-//            steps {
-//                script {
-//                    dir('ansible') {
-//                        sh """
-//                        if [ -f "hosts" ]; then
-//                            echo "Found hosts file at \$(pwd)"
-//                            sed -i "2s|.*|${EC2_PUBLIC_IP}|" hosts
-//                            echo "Updated hosts file:"
-//                            cat hosts
-//                        else
-//                            echo "hosts file not found in \$(pwd)!"
-//                            exit 1
-//                        fi
-//                        """
-//                    }
-//                }
-//            }
-//        }
-
-//  for linux users
-
-//         stage('Check Ansible Version') {
-//             steps {
-//                 script {
-//                     sh """
-//                     echo "Printing the current Ansible version:"
-//                     ansible --version
-//                     """
-//                 }
-//             }
-//         }
-//         stage('Run Ansible Playbook') {
-//             steps {
-//                 script {
-//                     dir('ansible') {
-//                         sh """
-//                         if [ -f "docker_deploy_playbook.yml" ]; then
-//                             echo "Found playbook docker_deploy_playbook.yml"
-//
-//                             # Run the Ansible playbook
-//                             ansible-playbook -i hosts docker_deploy_playbook.yml
-//                         else
-//                             echo "Playbook docker_deploy_playbook.yml not found!"
-//                             exit 1
-//                         fi
-//                         """
-//                     }
-//                 }
-//             }
-//         }
-
