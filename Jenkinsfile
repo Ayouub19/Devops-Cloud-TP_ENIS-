@@ -128,7 +128,7 @@ pipeline {
                     		sh """
                     		docker build -t frontend-app .
                     		"""
-                                echo "Built Image: ${frontendImage.id}"
+                                echo "Built Image: frontend-app "
                             }
                         }
                     }
@@ -141,7 +141,7 @@ pipeline {
                     		sh """
                     		docker build -t backend-app .
                     		"""
-                                echo "Built Image: ${backendImage.id}"
+                                echo "Built Image: backend-app"
                             }
                         }
                     }
@@ -245,4 +245,15 @@ pipeline {
              }
          }
 }
+    post {
+            success {
+                script {
+                    def instanceUrl = "http://${EC2_PUBLIC_IP}:81"
+                    echo "The instance is successfully deployed. Access it here: ${instanceUrl}"
+                }
+            }
+            failure {
+                echo "The pipeline failed. Please check the logs for details."
+            }
+        }
 }
