@@ -2,3 +2,4 @@
 **/my-terraform-project/remote-backend/.terraform*
 enis-app-tp/backend/venv
 **/__pycache__
+./ansible/deployer_key.pem
