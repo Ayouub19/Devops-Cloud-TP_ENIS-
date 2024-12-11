@@ -9,7 +9,7 @@ pipeline {
             AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
             AWS_CREDENTIALS_ID = 'awscridentalforjenkins'
             ECR_REPO_URL = '183631320726.dkr.ecr.us-east-1.amazonaws.com'
-            ECR_REPO_NAME = 'test'
+            ECR_REPO_NAME = 'enis-app'
             IMAGE_REPO = "${ECR_REPO_URL}/${ECR_REPO_NAME}"
             IMAGE_REPO_FRONTEND = "${IMAGE_REPO}:frontend-1.0"
             IMAGE_REPO_BACKEND = "${IMAGE_REPO}:backend-1.0"
