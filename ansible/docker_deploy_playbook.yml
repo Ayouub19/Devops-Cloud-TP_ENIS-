@@ -231,7 +231,6 @@
       apt:
         name: docker-compose-v2
         state: present
-        pull: always 
 
     - name: Ensure Docker service is started
       systemd:
@@ -371,6 +370,7 @@
       community.docker.docker_compose_v2:
         project_src: "{{ project_src_path }}"
         state: present
+        pull: always 
 #    - name: Start Docker containers from Docker Compose
 #      docker_compose:
 #        project_src: "{{ project_src_path }}"
