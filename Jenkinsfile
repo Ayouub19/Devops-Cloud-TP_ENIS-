@@ -219,7 +219,7 @@ pipeline {
              steps {
                  script {
                      sh """
-		     source /opt/ansible/bin/activate
+		     export PATH="/opt/ansible/bin:$PATH"
                      echo "Printing the current Ansible version:"
                      ansible --version
                      """
@@ -231,8 +231,8 @@ pipeline {
                  script {
                      dir('ansible') {
                          sh """
-		     	 source /opt/ansible/bin/activate
-                         if [ -f "docker_deploy_playbook.yml" ]; then
+                         export PATH="/opt/ansible/bin:$PATH"
+			 if [ -f "docker_deploy_playbook.yml" ]; then
                              echo "Found playbook docker_deploy_playbook.yml"
 
                              # Run the Ansible playbook
